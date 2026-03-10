@@ -1,0 +1,16 @@
+li a {
+    color: #28a745;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+li a:hover {
+    color: #1e7e34;
+}
+
+body {
+    background: #f8f9fa url("images/background.png") no-repeat;
+    background-size: cover;
+    font-family: sans-serif;
+    padding: 20px;
+}
