@@ -1,17 +1,20 @@
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Encodings.Web;
 
 namespace MvcMovie.Controllers;
 
 public class HelloWorldController : Controller
 {
-    
-    public string Index()
+    public IActionResult Index()
     {
-        return "To jest moja domyślna akcja (Index)...";
+        return View();
     }
 
-    public string Welcome()
+    public IActionResult Welcome(string name, int numTimes = 1)
     {
-        return "To jest metoda akcji Welcome!";
+        ViewData["Message"] = "Hello " + name;
+        ViewData["NumTimes"] = numTimes;
+
+        return View();
     }
 }
