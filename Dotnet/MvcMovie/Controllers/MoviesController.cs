@@ -142,9 +142,9 @@ namespace MvcMovie.Controllers
         }
 
         // GET: Movies/Delete/5
-        
         public async Task<IActionResult> Delete(int? id)
         {
+
             if (id == null)
             {
                 return NotFound();
