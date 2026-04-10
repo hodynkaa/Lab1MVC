@@ -1,0 +1,26 @@
+@model IEnumerable<TicketApp.Models.Category>
+
+@{
+    ViewData["Title"] = "Kategorie";
+}
+
+<h1>Kategorie wydarzeń</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Dodaj nową kategorię</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nazwa kategorii</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model) {
+            <tr>
+                <td>@item.Name</td>
+            </tr>
+        }
+    </tbody>
+</table>
