@@ -32,9 +32,9 @@
                 <input asp-for="Location" class="form-control" />
                 <span asp-validation-for="Location" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="TicketPrice" class="control-label"></label>
-                <input asp-for="TicketPrice" class="form-control" />
+            <div class="form-group mb-3">
+                <label asp-for="TicketPrice" class="control-label fw-bold">Cena biletu</label>
+                <input asp-for="TicketPrice" class="form-control" type="number" step="0.01" />
                 <span asp-validation-for="TicketPrice" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -61,7 +61,3 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}

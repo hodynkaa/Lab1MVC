@@ -14,12 +14,16 @@
     <thead>
         <tr>
             <th>Nazwa kategorii</th>
+            <th class="text-end">Akcje</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model) {
             <tr>
-                <td>@item.Name</td>
+                <td class="align-middle">@item.Name</td>
+                <td class="text-end">
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Usuń</a>
+                </td>
             </tr>
         }
     </tbody>

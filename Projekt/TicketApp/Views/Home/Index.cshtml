@@ -1,8 +1,66 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model IEnumerable<TicketApp.Models.Event>
+@{
+    ViewData["Title"] = "Strona główna";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="text-center mb-5 mt-4">
+    <h1 class="display-4 fw-bold">Witaj w <span class="text-primary">TicketApp!</span></h1>
+    <p class="lead">Znajdź i zarezerwuj bilety na najlepsze wydarzenia w Twoim mieście.</p>
+</div>
+
+<h3 class="mb-4 fw-bold border-bottom pb-2">Najbliższe wydarzenia</h3>
+
+<div class="row">
+    @if (!Model.Any())
+    {
+        <div class="col-12 text-center text-muted mt-5">
+            <h4>Obecnie brak zaplanowanych wydarzeń.</h4>
+            <p>Zajrzyj tu później lub dodaj nowe w panelu administratora!</p>
+        </div>
+    }
+    else
+    {
+        @foreach (var item in Model) {
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 shadow-sm border-0 bg-light">
+                    <div class="card-body">
+                        <span class="badge bg-primary mb-3 px-3 py-2">@item.Category?.Name</span>
+                        
+                        <h4 class="card-title fw-bold">@item.Title</h4>
+                        
+                        <p class="card-text text-muted mb-4" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                            @item.Description
+                        </p>
+                        
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between mb-1">
+                                <span class="text-muted small fw-bold">Data:</span>
+                                <span class="small">@item.EventDate.ToString("dd.MM.yyyy HH:mm")</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-1">
+                                <span class="text-muted small fw-bold">Miejsce:</span>
+                                <span class="small text-end">@item.Location</span>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <span class="text-muted small fw-bold">Wolne miejsca:</span>
+                                @if(item.AvailableSeats < 10) {
+                                    <span class="small text-danger fw-bold">Ostatnie @item.AvailableSeats szt!</span>
+                                } else {
+                                    <span class="small text-success fw-bold">@item.AvailableSeats z @item.TotalSeats</span>
+                                }
+                            </div>
+                        </div>
+
+                        <h5 class="text-success fw-bold text-center mt-3">@item.TicketPrice.ToString("C")</h5>
+                    </div>
+                    
+                    <div class="card-footer bg-white border-top-0 text-center pb-3 pt-0">
+                        <a asp-controller="Events" asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-primary w-100 fw-bold">
+                            Kup bilet / Szczegóły
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    }
 </div>

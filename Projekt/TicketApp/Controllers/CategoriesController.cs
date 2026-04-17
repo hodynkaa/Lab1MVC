@@ -40,4 +40,15 @@ public class CategoriesController : Controller
         }
         return View(category); 
     }
+    public async Task<IActionResult> Delete(int id)
+    {
+        var category = await _context.Categories.FindAsync(id);
+        if (category != null)
+        {
+            _context.Categories.Remove(category);
+            await _context.SaveChangesAsync();
+        }
+        return RedirectToAction(nameof(Index));
+    }
+
 }
