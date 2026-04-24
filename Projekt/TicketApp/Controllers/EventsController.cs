@@ -1,5 +1,7 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using TicketApp.Data;
 using TicketApp.Models;
@@ -9,29 +11,18 @@ namespace TicketApp.Controllers;
 public class EventsController : Controller
 {
     private readonly ApplicationDbContext _context;
+    private readonly UserManager<ApplicationUser> _userManager;
 
-    public EventsController(ApplicationDbContext context)
+    public EventsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
     {
         _context = context;
+        _userManager = userManager;
     }
 
     public async Task<IActionResult> Index()
     {
         var applicationDbContext = _context.Events.Include(e => e.Category);
         return View(await applicationDbContext.ToListAsync());
-    }
-
-    
-    public async Task<IActionResult> Details(int? id)
-    {
-        if (id == null) return NotFound();
-
-        var ticketEvent = await _context.Events
-            .Include(e => e.Category)
-            .FirstOrDefaultAsync(m => m.Id == id);
-        if (ticketEvent == null) return NotFound();
-
-        return View(ticketEvent);
     }
 
     
@@ -103,6 +94,46 @@ public class EventsController : Controller
         if (ticketEvent == null) return NotFound();
 
         return View(ticketEvent);
+    }
+    public async Task<IActionResult> Details(int? id)
+    {
+        if (id == null) return NotFound();
+
+        var ev = await _context.Events
+            .Include(e => e.Category)
+            .FirstOrDefaultAsync(m => m.Id == id);
+
+        if (ev == null) return NotFound();
+
+        return View(ev);
+    }
+
+    
+    [HttpPost]
+    [Authorize]
+    public async Task<IActionResult> ConfirmPurchase(int id)
+    {
+        var ev = await _context.Events.FindAsync(id);
+        var userId = _userManager.GetUserId(User);
+        if (ev != null && ev.AvailableSeats > 0 && userId != null)
+        {
+            ev.AvailableSeats--;
+            _context.Update(ev);
+
+            var reservation = new Reservation
+            {
+                UserId = userId,
+                EventId = id,
+                ReservationDate = DateTime.Now
+            };
+            _context.Reservations.Add(reservation);
+
+            await _context.SaveChangesAsync();
+            TempData["Success"] = "Płatność zakończona sukcesem! Bilet został zarezerwowany.";
+        
+            return RedirectToAction("Index", "Reservations");           
+        }
+        return RedirectToAction("Index", "Home");
     }
 
     [HttpPost, ActionName("Delete")]
