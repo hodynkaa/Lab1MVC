@@ -1,0 +1,58 @@
+@model TicketApp.Models.ProfileViewModel
+
+<div class="container mt-5" style="max-width: 900px;">
+    
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">@TempData["Success"]</div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">@TempData["Error"]</div>
+    }
+
+    <form asp-action="UpdateProfile" method="post" class="mb-5">
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label class="form-label fw-bold">Name *</label>
+                <input asp-for="Name" class="form-control" />
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-bold">Surname *</label>
+                <input asp-for="Surname" class="form-control" />
+            </div>
+        </div>
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <label class="form-label fw-bold">E-mail *</label>
+                <input asp-for="Email" class="form-control bg-light" readonly />
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-bold">Phone *</label>
+                <input asp-for="PhoneNumber" class="form-control" />
+            </div>
+        </div>
+        <button type="submit" class="btn btn-success px-4">Save</button>
+    </form>
+
+    <h3 class="fw-bold mb-4" style="color: #4a4a4a;">Password change</h3>
+    <form asp-action="ChangePassword" method="post">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Old password *</label>
+                    <input asp-for="OldPassword" type="password" class="form-control" />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">New password *</label>
+                    <input asp-for="NewPassword" type="password" class="form-control" />
+                </div>
+                <div class="mb-4">
+                    <label class="form-label fw-bold">Repeat password *</label>
+                    <input asp-for="ConfirmPassword" type="password" class="form-control" />
+                </div>
+                <button type="submit" class="btn btn-success px-4">Change password</button>
+            </div>
+        </div>
+    </form>
+</div>
