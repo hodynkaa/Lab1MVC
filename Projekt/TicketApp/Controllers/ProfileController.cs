@@ -52,17 +52,31 @@ public class ProfileController : Controller
     [HttpPost]
     public async Task<IActionResult> ChangePassword(ProfileViewModel model)
     {
-        var user = await _userManager.GetUserAsync(User);
-        if (user != null && model.OldPassword != null && model.NewPassword != null)
+        if (model.NewPassword != model.ConfirmPassword)
+        {
+            TempData["Error"] = "Hasła nie są takie same! / Passwords do not match!";
+            return RedirectToAction("Index");
+        }
+
+        if (model.OldPassword == model.NewPassword)
+        {
+            TempData["Error"] = "Nowe hasło musi się różnić od starego! / The new password must be different from the old one!";
+            return RedirectToAction("Index");
+        }
+        var user = await _userManager.GetUserAsync(User) as ApplicationUser;
+        
+        if (user != null && !string.IsNullOrEmpty(model.OldPassword) && !string.IsNullOrEmpty(model.NewPassword))
         {
             var result = await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
+            
             if (result.Succeeded)
             {
                 TempData["Success"] = "Hasło zmienione! / Password changed!";
             }
             else
             {
-                TempData["Error"] = "Błąd! Sprawdź stare hasło. / Error! Check old password.";
+                var errors = string.Join(" ", result.Errors.Select(e => e.Description));
+                TempData["Error"] = "Błąd / Error: " + errors;
             }
         }
         return RedirectToAction("Index");

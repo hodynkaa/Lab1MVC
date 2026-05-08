@@ -1,14 +1,24 @@
 ﻿@model IEnumerable<TicketApp.Models.Event>
 @{
     ViewData["Title"] = "Strona główna";
+    var categories = ViewBag.Categories as IEnumerable<TicketApp.Models.Category>;
+    var selectedCategoryId = Context.Request.Query["categoryId"].ToString();
+    var isMainPage = string.IsNullOrEmpty(selectedCategoryId);
 }
 
-<div class="text-center mb-5 mt-4">
-    <h1 class="display-4 fw-bold">Witaj w <span class="text-primary">TicketApp!</span></h1>
-    <p class="lead">Znajdź i zarezerwuj bilety na najlepsze wydarzenia w Twoim mieście.</p>
-</div>
-
-<h3 class="mb-4 fw-bold border-bottom pb-2">Najbliższe wydarzenia</h3>
+@if (isMainPage)
+{
+    <div class="text-center mb-5 mt-4">
+        <h1 class="display-4 fw-bold">Witaj w <span class="text-primary">TicketApp!</span></h1>
+        <p class="lead">Znajdź i zarezerwuj bilety na najlepsze wydarzenia w Twoim mieście.</p>
+    </div>
+    <h3 class="fw-bold mb-4 border-bottom pb-2">Najbliższe wydarzenia</h3>
+}
+else
+{
+    var currentCat = categories?.FirstOrDefault(c => c.Id.ToString() == selectedCategoryId);
+    <h3 class="fw-bold mb-4 border-bottom pb-2 mt-4 text-primary text-uppercase">@currentCat?.Name</h3>
+}
 
 <div class="row">
     @if (!Model.Any())
@@ -20,7 +30,8 @@
     }
     else
     {
-        @foreach (var item in Model) {
+        @foreach (var item in Model) 
+        {
             <div class="col-md-4 mb-4">
                 <div class="card h-100 shadow-sm border-0 bg-light">
                     <div class="card-body">
@@ -43,21 +54,24 @@
                             </div>
                             <div class="d-flex justify-content-between">
                                 <span class="text-muted small fw-bold">Wolne miejsca:</span>
-                                @if(item.AvailableSeats < 10) {
+                                @if(item.AvailableSeats < 10) 
+                                {
                                     <span class="small text-danger fw-bold">Ostatnie @item.AvailableSeats szt!</span>
-                                } else {
+                                } 
+                                else 
+                                {
                                     <span class="small text-success fw-bold">@item.AvailableSeats z @item.TotalSeats</span>
                                 }
                             </div>
                         </div>
-
+                        
                         <h5 class="text-success fw-bold text-center mt-3">@item.TicketPrice.ToString("C")</h5>
                     </div>
                     
-                    <div class="card-footer bg-white border-top-0 text-center pb-3 pt-0">
-                        <a asp-controller="Events" asp-action="Details" asp-route-id="@item.Id" 
-                            class="btn @(item.AvailableSeats <= 0 ? "btn-secondary disabled" : "btn-primary") w-100">
-                                @(item.AvailableSeats <= 0 ? "Brak biletów" : "Kup bilet")
+                    <div class="card-footer bg-light border-top-0 text-center pb-3 pt-0">
+                        <a asp-controller="Events" asp-action="Details" asp-route-id="@item.Id"
+                           class="btn @(item.AvailableSeats <= 0 ? "btn-secondary disabled" : "btn-primary") w-100">
+                            @(item.AvailableSeats <= 0 ? "Brak biletów" : "Kup bilet")
                         </a>
                     </div>
                 </div>
