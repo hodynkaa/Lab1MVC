@@ -35,24 +35,50 @@
         <button type="submit" class="btn btn-success px-4">Save</button>
     </form>
 
-    <h3 class="fw-bold mb-4" style="color: #4a4a4a;">Password change</h3>
+    <h3 class="fw-bold mb-4 mt-5" style="color: #4a4a4a;">Password change</h3>
     <form asp-action="ChangePassword" method="post">
         <div class="row">
             <div class="col-md-6">
+                
                 <div class="mb-3">
                     <label class="form-label fw-bold">Old password *</label>
-                    <input asp-for="OldPassword" type="password" class="form-control" />
+                    <div class="input-group">
+                        <input asp-for="OldPassword" type="password" class="form-control" id="OldPassword" required />
+                        <button class="btn btn-outline-secondary" type="button" onclick="togglePassword('OldPassword', this)">👁️</button>
+                    </div>
                 </div>
+
                 <div class="mb-3">
                     <label class="form-label fw-bold">New password *</label>
-                    <input asp-for="NewPassword" type="password" class="form-control" />
+                    <div class="input-group">
+                        <input asp-for="NewPassword" type="password" class="form-control" id="NewPassword" required />
+                        <button class="btn btn-outline-secondary" type="button" onclick="togglePassword('NewPassword', this)">👁️</button>
+                    </div>
                 </div>
+
                 <div class="mb-4">
                     <label class="form-label fw-bold">Repeat password *</label>
-                    <input asp-for="ConfirmPassword" type="password" class="form-control" />
+                    <div class="input-group">
+                        <input asp-for="ConfirmPassword" type="password" class="form-control" id="ConfirmPassword" required />
+                        <button class="btn btn-outline-secondary" type="button" onclick="togglePassword('ConfirmPassword', this)">👁️</button>
+                    </div>
                 </div>
+
                 <button type="submit" class="btn btn-success px-4">Change password</button>
             </div>
         </div>
     </form>
 </div>
+
+<script>
+    function togglePassword(inputId, button) {
+        var input = document.getElementById(inputId);
+                if (input.type === "password") {
+            input.type = "text";
+            button.textContent = "🙈"; 
+        } else {
+            input.type = "password";
+            button.textContent = "👁️"; 
+        }
+    }
+</script>
