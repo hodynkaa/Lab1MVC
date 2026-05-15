@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using TicketApp.Data;
 using TicketApp.Models;
+using System.Security.Claims;
 
 namespace TicketApp.Controllers;
 
@@ -21,6 +22,7 @@ public class EventsController : Controller
 
     public async Task<IActionResult> Index()
     {
+        if (User.Identity?.Name != "katyahour@gmail.com") return RedirectToAction("Index", "Home");
         var applicationDbContext = _context.Events.Include(e => e.Category);
         return View(await applicationDbContext.ToListAsync());
     }
@@ -28,6 +30,7 @@ public class EventsController : Controller
     
     public IActionResult Create()
     {
+        if (User.Identity?.Name != "katyahour@gmail.com") return RedirectToAction("Index", "Home");
         ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name");
         return View();
     }
@@ -50,6 +53,7 @@ public class EventsController : Controller
     
     public async Task<IActionResult> Edit(int? id)
     {
+        if (User.Identity?.Name != "katyahour@gmail.com") return RedirectToAction("Index", "Home");
         if (id == null) return NotFound();
 
         var ticketEvent = await _context.Events.FindAsync(id);
@@ -86,6 +90,7 @@ public class EventsController : Controller
     
     public async Task<IActionResult> Delete(int? id)
     {
+        if (User.Identity?.Name != "katyahour@gmail.com") return RedirectToAction("Index", "Home");
         if (id == null) return NotFound();
 
         var ticketEvent = await _context.Events
@@ -151,4 +156,6 @@ public class EventsController : Controller
     {
         return _context.Events.Any(e => e.Id == id);
     }
+
+    
 }
