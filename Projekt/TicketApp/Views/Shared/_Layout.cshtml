@@ -36,7 +36,14 @@
                     </li>
                 }
             </ul>
-            
+            @if (User.Identity?.IsAuthenticated == true && User.Identity?.Name == "katyahour@gmail.com"){
+                <div class="d-flex align-items-center me-3">
+                    <a class="nav-link text-danger fw-bold text-uppercase border border-danger rounded px-3 py-1" 
+                    asp-area="" asp-controller="Events" asp-action="Index">
+                    Panel Admina
+                    </a>
+                </div>
+            }
             <partial name="_LoginPartial" />
             
         </div>
