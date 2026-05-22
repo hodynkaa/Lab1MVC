@@ -32,8 +32,14 @@ public class ProfileController : Controller
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> UpdateProfile(ProfileViewModel model)
     {
+        if (!ModelState.IsValid)
+        {
+            TempData["Error"] = "Błąd: Nieprawidłowe dane formularza.";
+            return RedirectToAction("Index");
+        }
         var user = await _userManager.GetUserAsync(User) as ApplicationUser;
         if (user != null)
         {
@@ -50,6 +56,7 @@ public class ProfileController : Controller
 
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> ChangePassword(ProfileViewModel model)
     {
         if (model.NewPassword != model.ConfirmPassword)

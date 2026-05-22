@@ -21,12 +21,15 @@ public class Event
     public string Location { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "Podaj cenę biletu.")]
+    [Range(0.00, 10000.00, ErrorMessage = "Cena nie może być ujemna.")]
     [Column(TypeName = "decimal(18,2)")]
     public decimal TicketPrice { get; set; }
 
     [Required(ErrorMessage = "Podaj całkowitą liczbę miejsc.")]
+    [Range(1, 100000, ErrorMessage = "Liczba miejsc musi być większa niż 0.")]
     public int TotalSeats { get; set; }
 
+    [Range(0, 100000, ErrorMessage = "Dostępne miejsca nie mogą być ujemne.")]
     public int AvailableSeats { get; set; }
 
     public int CategoryId { get; set; }

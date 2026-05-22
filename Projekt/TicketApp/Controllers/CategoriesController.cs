@@ -24,6 +24,7 @@ public class CategoriesController : Controller
     
     public IActionResult Create()
     {
+        if (User.Identity?.Name != "katyahour@gmail.com") return RedirectToAction("Index", "Home");
         return View();
     }
 
@@ -32,6 +33,8 @@ public class CategoriesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(Category category)
     {
+        if (User.Identity?.Name != "katyahour@gmail.com") return RedirectToAction("Index", "Home");
+
         if (ModelState.IsValid)
         {
             _context.Add(category);
@@ -40,8 +43,13 @@ public class CategoriesController : Controller
         }
         return View(category); 
     }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Delete(int id)
     {
+        if (User.Identity?.Name != "katyahour@gmail.com") return RedirectToAction("Index", "Home");
+        
         var category = await _context.Categories.FindAsync(id);
         if (category != null)
         {

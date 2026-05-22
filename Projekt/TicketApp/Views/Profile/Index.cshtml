@@ -1,84 +1,130 @@
 @model TicketApp.Models.ProfileViewModel
 
-<div class="container mt-5" style="max-width: 900px;">
+@{
+    ViewData["Title"] = "Mój profil";
+}
+
+<div class="container mt-5 mb-5" style="max-width: 900px;">
     
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold text-dark mb-0">Ustawienia konta</h2>
+    </div>
+
     @if (TempData["Success"] != null)
     {
-        <div class="alert alert-success">@TempData["Success"]</div>
+        <div class="alert alert-success alert-dismissible fade show shadow-sm border-0" role="alert">
+            <i class="bi bi-check-circle-fill me-2"></i> @TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
     }
     @if (TempData["Error"] != null)
     {
-        <div class="alert alert-danger">@TempData["Error"]</div>
+        <div class="alert alert-danger alert-dismissible fade show shadow-sm border-0" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i> @TempData["Error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
     }
 
-    <form asp-action="UpdateProfile" method="post" class="mb-5">
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <label class="form-label fw-bold">Name *</label>
-                <input asp-for="Name" class="form-control" />
-            </div>
-            <div class="col-md-6">
-                <label class="form-label fw-bold">Surname *</label>
-                <input asp-for="Surname" class="form-control" />
-            </div>
+    <div class="card border-0 shadow-sm rounded-3 mb-5">
+        <div class="card-header bg-dark text-white p-3">
+            <h5 class="mb-0 fw-bold"><i class="bi bi-person-lines-fill me-2"></i> Dane podstawowe</h5>
         </div>
-        <div class="row mb-4">
-            <div class="col-md-6">
-                <label class="form-label fw-bold">E-mail *</label>
-                <input asp-for="Email" class="form-control bg-light" readonly />
-            </div>
-            <div class="col-md-6">
-                <label class="form-label fw-bold">Phone *</label>
-                <input asp-for="PhoneNumber" class="form-control" />
-            </div>
-        </div>
-        <button type="submit" class="btn btn-success px-4">Save</button>
-    </form>
-
-    <h3 class="fw-bold mb-4 mt-5" style="color: #4a4a4a;">Password change</h3>
-    <form asp-action="ChangePassword" method="post">
-        <div class="row">
-            <div class="col-md-6">
-                
-                <div class="mb-3">
-                    <label class="form-label fw-bold">Old password *</label>
-                    <div class="input-group">
-                        <input asp-for="OldPassword" type="password" class="form-control" id="OldPassword" required />
-                        <button class="btn btn-outline-secondary" type="button" onclick="togglePassword('OldPassword', this)">👁️</button>
+        <div class="card-body p-4 p-md-5">
+            <form asp-action="UpdateProfile" method="post">
+                <div class="row mb-3">
+                    <div class="col-md-6 mb-3 mb-md-0">
+                        <label asp-for="Name" class="form-label fw-bold text-muted">Imię *</label>
+                        <input asp-for="Name" class="form-control bg-light border-0 shadow-none" />
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="Surname" class="form-label fw-bold text-muted">Nazwisko *</label>
+                        <input asp-for="Surname" class="form-control bg-light border-0 shadow-none" />
                     </div>
                 </div>
-
-                <div class="mb-3">
-                    <label class="form-label fw-bold">New password *</label>
-                    <div class="input-group">
-                        <input asp-for="NewPassword" type="password" class="form-control" id="NewPassword" required />
-                        <button class="btn btn-outline-secondary" type="button" onclick="togglePassword('NewPassword', this)">👁️</button>
+                <div class="row mb-4">
+                    <div class="col-md-6 mb-3 mb-md-0">
+                        <label asp-for="Email" class="form-label fw-bold text-muted">Adres E-mail</label>
+                        <input asp-for="Email" class="form-control bg-secondary bg-opacity-10 text-muted border-0 shadow-none" readonly />
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="PhoneNumber" class="form-label fw-bold text-muted">Numer telefonu *</label>
+                        <input asp-for="PhoneNumber" class="form-control bg-light border-0 shadow-none" />
                     </div>
                 </div>
-
-                <div class="mb-4">
-                    <label class="form-label fw-bold">Repeat password *</label>
-                    <div class="input-group">
-                        <input asp-for="ConfirmPassword" type="password" class="form-control" id="ConfirmPassword" required />
-                        <button class="btn btn-outline-secondary" type="button" onclick="togglePassword('ConfirmPassword', this)">👁️</button>
-                    </div>
+                <div class="d-flex justify-content-end mt-4">
+                    <button type="submit" class="btn btn-primary px-4 fw-bold shadow-sm">
+                        <i class="bi bi-save me-2"></i> Zapisz zmiany
+                    </button>
                 </div>
-
-                <button type="submit" class="btn btn-success px-4">Change password</button>
-            </div>
+            </form>
         </div>
-    </form>
+    </div>
+
+    <div class="card border-0 shadow-sm rounded-3">
+        <div class="card-header bg-dark text-white p-3">
+            <h5 class="mb-0 fw-bold"><i class="bi bi-shield-lock-fill me-2"></i> Zmiana hasła</h5>
+        </div>
+        <div class="card-body p-4 p-md-5">
+            <form asp-action="ChangePassword" method="post">
+                <div class="row justify-content-center">
+                    <div class="col-md-8">
+                        
+                        <div class="mb-3">
+                            <label asp-for="OldPassword" class="form-label fw-bold text-muted">Stare hasło *</label>
+                            <div class="input-group">
+                                <input asp-for="OldPassword" type="password" class="form-control bg-light border-0 shadow-none" id="OldPassword" required />
+                                <button class="btn btn-light border-0 text-primary fs-5 px-3" type="button" onclick="togglePassword('OldPassword', this)">
+                                    <i class="bi bi-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="NewPassword" class="form-label fw-bold text-muted">Nowe hasło *</label>
+                            <div class="input-group">
+                                <input asp-for="NewPassword" type="password" class="form-control bg-light border-0 shadow-none" id="NewPassword" required />
+                                <button class="btn btn-light border-0 text-primary fs-5 px-3" type="button" onclick="togglePassword('NewPassword', this)">
+                                    <i class="bi bi-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="ConfirmPassword" class="form-label fw-bold text-muted">Powtórz nowe hasło *</label>
+                            <div class="input-group">
+                                <input asp-for="ConfirmPassword" type="password" class="form-control bg-light border-0 shadow-none" id="ConfirmPassword" required />
+                                <button class="btn btn-light border-0 text-primary fs-5 px-3" type="button" onclick="togglePassword('ConfirmPassword', this)">
+                                    <i class="bi bi-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-center mt-4">
+                            <button type="submit" class="btn btn-success px-5 fw-bold shadow-sm">
+                                <i class="bi bi-key-fill me-2"></i> Zmień hasło
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
 </div>
 
 <script>
     function togglePassword(inputId, button) {
         var input = document.getElementById(inputId);
-                if (input.type === "password") {
+        var icon = button.querySelector('i');
+        
+        if (input.type === "password") {
             input.type = "text";
-            button.textContent = "🙈"; 
+            icon.classList.remove("bi-eye");
+            icon.classList.add("bi-eye-slash");
         } else {
             input.type = "password";
-            button.textContent = "👁️"; 
+            icon.classList.remove("bi-eye-slash");
+            icon.classList.add("bi-eye");
         }
     }
 </script>

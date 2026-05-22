@@ -1,69 +1,81 @@
 @model TicketApp.Models.Event
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Usuń wydarzenie";
 }
 
-<h1>Delete</h1>
+<div class="container mt-5 mb-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            
+            <div class="alert alert-danger d-flex align-items-center shadow-sm border-0" style="border-radius: 12px;" role="alert">
+                <i class="bi bi-exclamation-triangle-fill fs-1 me-4 text-danger"></i>
+                <div>
+                    <h4 class="alert-heading mb-1 fw-bold">Czy na pewno chcesz usunąć to wydarzenie?</h4>
+                    <p class="mb-0 small text-danger">Ta operacja jest nieodwracalna. Wydarzenie zniknie ze strony głównej.</p>
+                </div>
+            </div>
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>Event</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.EventDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.EventDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Location)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Location)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TicketPrice)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TicketPrice)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TotalSeats)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TotalSeats)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AvailableSeats)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AvailableSeats)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Category)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Category.Name)
-        </dd>
-    </dl>
-    
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
-    </form>
+            <div class="card border-0 shadow-sm mt-4" style="border-radius: 12px; overflow: hidden;">
+                <div class="card-header bg-dark text-white p-3">
+                    <h5 class="mb-0 fw-bold text-center">Szczegóły usuwanego wydarzenia</h5>
+                </div>
+                <div class="card-body p-4 p-md-5">
+                    
+                    <div class="row mb-3 border-bottom pb-2">
+                        <div class="col-sm-5 text-muted fw-semibold">Tytuł:</div>
+                        <div class="col-sm-7 fw-bold text-dark fs-5">@Model.Title</div>
+                    </div>
+                    
+                    <div class="row mb-3 border-bottom pb-2">
+                        <div class="col-sm-5 text-muted fw-semibold">Kategoria:</div>
+                        <div class="col-sm-7">
+                            <span class="badge bg-primary bg-opacity-75 fs-6">@Model.Category?.Name</span>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3 border-bottom pb-2">
+                        <div class="col-sm-5 text-muted fw-semibold">Data i czas:</div>
+                        <div class="col-sm-7 fw-bold">@Model.EventDate.ToString("dd.MM.yyyy HH:mm")</div>
+                    </div>
+                    
+                    <div class="row mb-3 border-bottom pb-2">
+                        <div class="col-sm-5 text-muted fw-semibold">Miejsce:</div>
+                        <div class="col-sm-7">@Model.Location</div>
+                    </div>
+                    
+                    <div class="row mb-3 border-bottom pb-2">
+                        <div class="col-sm-5 text-muted fw-semibold">Cena biletu:</div>
+                        <div class="col-sm-7 text-success fw-bold">@Model.TicketPrice.ToString("C")</div>
+                    </div>
+                    
+                    <div class="row mb-3 border-bottom pb-2">
+                        <div class="col-sm-5 text-muted fw-semibold">Miejsca (Dostępne/Wszystkie):</div>
+                        <div class="col-sm-7 fw-bold">@Model.AvailableSeats / @Model.TotalSeats</div>
+                    </div>
+
+                    <div class="row mt-4 bg-light p-3 rounded">
+                        <div class="col-12 text-muted fw-semibold mb-1">Opis:</div>
+                        <div class="col-12 small text-justify">@Model.Description</div>
+                    </div>
+
+                </div>
+                
+                <div class="card-footer bg-white p-4">
+                    <form asp-action="Delete" class="d-flex justify-content-between align-items-center">
+                        <input type="hidden" asp-for="Id" />
+                        
+                        <a asp-action="Index" class="btn btn-outline-secondary px-4 fw-bold">
+                            <i class="bi bi-arrow-left me-2"></i> Anuluj
+                        </a>
+                        
+                        <button type="submit" class="btn btn-danger px-4 fw-bold shadow-sm">
+                            <i class="bi bi-trash3-fill me-2"></i> Usuń bezpowrotnie
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
 </div>

@@ -27,6 +27,7 @@ public class ReservationsController : Controller
 
         var userReservations = await _context.Reservations
             .Include(r => r.Event)
+            .ThenInclude(e => e.Category)
             .Where(r => r.UserId == userId)
             .OrderByDescending(r => r.ReservationDate)
             .ToListAsync();

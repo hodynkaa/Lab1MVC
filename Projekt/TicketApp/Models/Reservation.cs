@@ -14,9 +14,10 @@ public class Reservation
     public string UserId { get; set; } = string.Empty;
 
 
+    public ApplicationUser? User { get; set; }
     [Required(ErrorMessage = "Podaj liczbę biletów.")]
     [Range(1, 10, ErrorMessage = "Możesz kupić od 1 do 10 biletów jednorazowo.")]
-    public int TicketsCount { get; set; }
+    public int TicketsCount { get; set; } =1;
 
     [Required]
     public DateTime ReservationDate { get; set; } = DateTime.Now;
