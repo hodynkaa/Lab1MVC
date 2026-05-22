@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using TicketApp.Data;
 using TicketApp.Models;
-using System.Security.Claims;
 
 namespace TicketApp.Controllers;
 
@@ -40,6 +39,8 @@ public class EventsController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create([Bind("Id,Title,Description,EventDate,Location,TicketPrice,TotalSeats,AvailableSeats,CategoryId")] Event ticketEvent)
     {
+        if (User.Identity?.Name != "katyahour@gmail.com") return RedirectToAction("Index", "Home");
+
         if (ModelState.IsValid)
         {
             _context.Add(ticketEvent);
@@ -67,6 +68,8 @@ public class EventsController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,EventDate,Location,TicketPrice,TotalSeats,AvailableSeats,CategoryId")] Event ticketEvent)
     {
+        if (User.Identity?.Name != "katyahour@gmail.com") return RedirectToAction("Index", "Home");
+        
         if (id != ticketEvent.Id) return NotFound();
 
         if (ModelState.IsValid)
@@ -102,6 +105,8 @@ public class EventsController : Controller
     }
     public async Task<IActionResult> Details(int? id)
     {
+        if (User.Identity?.Name != "katyahour@gmail.com") return RedirectToAction("Index", "Home");
+
         if (id == null) return NotFound();
 
         var ev = await _context.Events
@@ -145,6 +150,7 @@ public class EventsController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int id)
     {
+        if (User.Identity?.Name != "katyahour@gmail.com") return RedirectToAction("Index", "Home");
         var ticketEvent = await _context.Events.FindAsync(id);
         if (ticketEvent != null) _context.Events.Remove(ticketEvent);
         

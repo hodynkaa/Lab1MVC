@@ -1,25 +1,41 @@
 ﻿@model ErrorViewModel
 @{
-    ViewData["Title"] = "Error";
+    ViewData["Title"] = "Wystąpił błąd";
 }
 
-<h1 class="text-danger">Error.</h1>
-<h2 class="text-danger">An error occurred while processing your request.</h2>
+<div class="container mt-5 mb-5 text-center">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            
+            <div class="card border-0 shadow-sm rounded-3 overflow-hidden mt-5">
+                <div class="card-body p-5">
+                    
+                    <i class="bi bi-exclamation-triangle text-warning mb-3" style="font-size: 5rem;"></i>
+                    
+                    <h2 class="fw-bold text-dark mt-2">Ups! Coś poszło nie tak.</h2>
+                    <p class="text-muted fs-5 mb-4 text-center">
+                        Przepraszamy, podczas przetwarzania Twojego żądania wystąpił nieoczekiwany błąd serwera. Nasi specjaliści już o tym wiedzą!
+                    </p>
 
-@if (Model.ShowRequestId)
-{
-    <p>
-        <strong>Request ID:</strong> <code>@Model.RequestId</code>
-    </p>
-}
+                    @if (Model.ShowRequestId)
+                    {
+                        <div class="alert alert-light border text-start small mb-4" role="alert">
+                            <strong class="text-dark"><i class="bi bi-bug me-1"></i> ID błędu (Request ID):</strong> 
+                            <code class="fs-6 ms-1">@Model.RequestId</code>
+                            <hr class="my-2">
+                            <span class="text-muted small">Jeśli problem będzie się powtarzał, podaj ten kod kontaktując się z pomocą techniczną.</span>
+                        </div>
+                    }
 
-<h3>Development Mode</h3>
-<p>
-    Swapping to <strong>Development</strong> environment will display more detailed information about the error that occurred.
-</p>
-<p>
-    <strong>The Development environment shouldn't be enabled for deployed applications.</strong>
-    It can result in displaying sensitive information from exceptions to end users.
-    For local debugging, enable the <strong>Development</strong> environment by setting the <strong>ASPNETCORE_ENVIRONMENT</strong> environment variable to <strong>Development</strong>
-    and restarting the app.
-</p>
+                    <div class="mt-4">
+                        <a asp-controller="Home" asp-action="Index" class="btn btn-primary px-4 py-3 fw-bold shadow-sm">
+                            <i class="bi bi-house-door me-2"></i> Wróć na stronę główną
+                        </a>
+                    </div>
+                    
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
